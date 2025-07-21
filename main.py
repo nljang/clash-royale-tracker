@@ -23,7 +23,7 @@ def form_get(request: Request):
 @app.post("/", response_class=HTMLResponse)    # @app.post("/") means run when form is submitted (submitting player id)
 def form_post(request: Request, tag: str = Form(...)):
     tag = tag.upper()   # capitalizes input
-    url = f'https://api.clashroyale.com/v1/players/%23{tag}'    #uses %23 as URL encoding for "#" to auto add it
+    url = f'https://proxy.royaleapi.dev/v1/players/%23{tag}'    #uses %23 as URL encoding for "#" to auto add it + royaleapi proxy
     res = requests.get(url, headers=HEADERS)    # makes a GET request to clash royale API
 
     if res.status_code != 200:    # status code 200 means success
