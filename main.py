@@ -10,9 +10,8 @@ import os
 app = FastAPI()
 templates = Jinja2Templates(directory ='templates')
 
-load_dotenv()
-API_TOKEN = os.getenv("API_KEY")
-HEADERS = {"Authorization": API_TOKEN}
+API_KEY = os.getenv("API_KEY")
+HEADERS = {"Authorization": API_KEY}
 
 @app.get("/", response_class=HTMLResponse)    # app.get("/") means run this when the website loads
 def form_get(request: Request):
