@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clash Royale Stat Tracker</title>
+</head>
+<body>
+    <h1>Clash Royale Stat Tracker</h1>
+    <form method="post">
+        <label for="tag">Enter player id ("#" not needed)</label>
+        <input type="text" id="tag" name="tag" required>
+        <button type="submit">Search</button>
+    </form>
+
+    {% if player %}
+        <h2>Stats for {{ player.name }}</h2>
+        <ul>
+            <li>Trophies: {{player.trophies }}</li>
+            <li>Best Trophies: {{ player.bestTrophies }}</li>
+            <li>Arena: {{ player.arena.name }}</li>
+            <li>Wins: {{ player.wins }}</li>
+            <li>Losses: {{ player.losses }}</li>
+            <li>Win Rate: {{ winrate }}%</li>
+        </ul>
+    
+    {% elif error %}
+        <p style="color:red;">{{ error }}</p>
+    {% endif %}
+</body>
+</html>
