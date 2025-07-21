@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Request, Form
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
 import requests
 
 import os
@@ -11,6 +12,7 @@ if os.getenv("RENDER") != "True":    #loads this if running local for testing, b
 
 
 app = FastAPI()
+app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory ='templates')
 
 API_KEY = os.getenv("API_KEY")

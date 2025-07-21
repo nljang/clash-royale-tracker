@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clash Royale Stat Tracker</title>
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
     <h1>Clash Royale Stat Tracker</h1>
     <form method="post">
-        <label for="tag">Enter player id ("#" not needed)</label>
+        <label for="tag">Enter player tag (without "#"):</label>
         <input type="text" id="tag" name="tag" required>
         <button type="submit">Search</button>
     </form>
@@ -16,16 +17,15 @@
     {% if player %}
         <h2>Stats for {{ player.name }}</h2>
         <ul>
-            <li>Trophies: {{player.trophies }}</li>
-            <li>Best Trophies: {{ player.bestTrophies }}</li>
-            <li>Arena: {{ player.arena.name }}</li>
-            <li>Wins: {{ player.wins }}</li>
-            <li>Losses: {{ player.losses }}</li>
-            <li>Win Rate: {{ winrate }}%</li>
+            <li><strong>Trophies:</strong> {{ player.trophies }}</li>
+            <li><strong>Best Trophies:</strong> {{ player.bestTrophies }}</li>
+            <li><strong>Arena:</strong> {{ player.arena.name }}</li>
+            <li><strong>Wins:</strong> {{ player.wins }}</li>
+            <li><strong>Losses:</strong> {{ player.losses }}</li>
+            <li><strong>Win Rate:</strong> {{ winrate }}%</li>
         </ul>
-    
     {% elif error %}
-        <p style="color:red;">{{ error }}</p>
+        <p class="error">{{ error }}</p>
     {% endif %}
 </body>
 </html>
