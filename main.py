@@ -5,7 +5,7 @@ import requests
 
 import os
 
-if os.getenv("RENDER") != "true":    #loads this if running local for testing, but when deployed api key is injected
+if os.getenv("RENDER") != "True":    #loads this if running local for testing, but when deployed api key is injected
     from dotenv import load_dotenv    
     load_dotenv()
 
