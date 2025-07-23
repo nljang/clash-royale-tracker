@@ -7,25 +7,34 @@
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <h1>Clash Royale Stat Tracker</h1>
-    <form method="post">
-        <label for="tag">Enter player tag (without "#"):</label>
-        <input type="text" id="tag" name="tag" required>
-        <button type="submit">Search</button>
-    </form>
+    <div class="container">
+        <header>
+            <h1>Clash Royale Stat Tracker</h1>
+            <p>Track your live player stats with ease</p>
+        </header>
 
-    {% if player %}
-        <h2>Stats for {{ player.name }}</h2>
-        <ul>
-            <li><strong>Trophies:</strong> {{ player.trophies }}</li>
-            <li><strong>Best Trophies:</strong> {{ player.bestTrophies }}</li>
-            <li><strong>Arena:</strong> {{ player.arena.name }}</li>
-            <li><strong>Wins:</strong> {{ player.wins }}</li>
-            <li><strong>Losses:</strong> {{ player.losses }}</li>
-            <li><strong>Win Rate:</strong> {{ winrate }}%</li>
-        </ul>
-    {% elif error %}
+        <form method="post" class="search-form">
+            <label for="tag">Enter player tag (without "#"):</label>
+            <input type="text" id="tag" name="tag" placeholder="e.g. 2ABC9LQ" required>
+            <button type="submit">Search</button>
+        </form>
+
+        {% if player %}
+        <div class="result-card">
+            <h2>{{ player.name }}</h2>
+            <ul>
+                <li><strong>Trophies:</strong> {{ player.trophies }}</li>
+                <li><strong>Best Trophies:</strong> {{ player.bestTrophies }}</li>
+                <li><strong>Arena:</strong> {{ player.arena.name }}</li>
+                <li><strong>Wins:</strong> {{ player.wins }}</li>
+                <li><strong>Losses:</strong> {{ player.losses }}</li>
+                <li><strong>Win Rate:</strong> {{ winrate }}%</li>
+            </ul>
+        </div>
+        {% elif error %}
         <p class="error">{{ error }}</p>
-    {% endif %}
+        {% endif %}
+    </div>
 </body>
 </html>
+
