@@ -7,9 +7,9 @@ body {
 }
 
 .container {
-    max-width: 600px;
-    margin: 3rem auto;
-    padding: 2rem;
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 1rem 2rem;
 }
 
 header {
@@ -64,11 +64,65 @@ header p {
     border-radius: 6px;
     font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
 }
 
-.search-form button:hover {
+.search-form button:hover:not(:disabled) {
     background-color: #e6c133;
+    transform: translateY(-1px);
+}
+
+.search-form button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.help-text {
+    color: #888;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+}
+
+/* Search History */
+.search-history {
+    background-color: #2a2d31;
+    border-radius: 6px;
+    margin-top: 0.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.history-item {
+    padding: 0.75rem;
+    border-bottom: 1px solid #333;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.history-item:hover {
+    background-color: #3a3d41;
+}
+
+.history-item:last-child {
+    border-bottom: none;
+}
+
+.history-name {
+    font-weight: bold;
+    color: #f9d342;
+}
+
+.history-tag {
+    font-size: 0.9rem;
+    color: #aaa;
 }
 
 .result-card {
@@ -101,19 +155,213 @@ header p {
     color: #f0f0f0;
 }
 
+/* Stats Sections */
+.stats-section {
+    margin-bottom: 2rem;
+}
+
+.stats-section h3 {
+    color: #f9d342;
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #333;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.stat-item {
+    background-color: #2a2d31;
+    padding: 1rem;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(249, 211, 66, 0.2);
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: #aaa;
+    margin-bottom: 0.5rem;
+}
+
+.stat-value {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #f9d342;
+}
+
+/* Clan Information */
+.clan-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+/* Deck Container */
+.deck-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 0.8rem;
+}
+
+.card-item {
+    background-color: #2a2d31;
+    padding: 0.8rem;
+    border-radius: 8px;
+    text-align: center;
+    border: 2px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.card-item:hover {
+    border-color: #f9d342;
+    transform: translateY(-2px);
+}
+
+.card-name {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 0.3rem;
+}
+
+.card-level {
+    font-size: 0.8rem;
+    color: #f9d342;
+    font-weight: bold;
+}
+
+/* Favourite Card */
+.favourite-card {
+    background-color: #2a2d31;
+    padding: 1.5rem;
+    border-radius: 10px;
+    text-align: center;
+    border: 3px solid #f9d342;
+}
+
+.favourite-card .card-name {
+    font-size: 1.2rem;
+    color: #f9d342;
+    font-weight: bold;
+}
+
+/* Error Container */
+.error-container {
+    background-color: #1f2124;
+    border-radius: 10px;
+    padding: 1.5rem;
+    border-left: 4px solid #ff4c4c;
+}
+
 .error {
     color: #ff4c4c;
     font-weight: bold;
     text-align: center;
+    margin: 0;
 }
 
+/* Loading States */
+.loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(249, 211, 66, 0.3);
+    border-radius: 50%;
+    border-top-color: #f9d342;
+    animation: spin 1s ease-in-out infinite;
+    margin-right: 0.5rem;
+}
+
+/* Animations */
 @keyframes fadeIn {
     from {
         opacity: 0;
-        transform: translateY(10px);
+        transform: translateY(20px);
     }
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+        margin: 1rem auto;
+    }
+    
+    h1 {
+        font-size: 2.2rem;
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 0.8rem;
+    }
+    
+    .stat-item {
+        padding: 0.8rem;
+    }
+    
+    .stat-value {
+        font-size: 1.2rem;
+    }
+    
+    .deck-container {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 0.6rem;
+    }
+    
+    .card-item {
+        padding: 0.6rem;
+    }
+    
+    .card-name {
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0.5rem;
+    }
+    
+    h1 {
+        font-size: 1.8rem;
+    }
+    
+    .search-form {
+        padding: 1rem;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .deck-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .stats-section h3 {
+        font-size: 1.1rem;
     }
 }

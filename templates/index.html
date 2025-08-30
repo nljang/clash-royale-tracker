@@ -13,28 +13,235 @@
             <p>Track your live player stats with ease</p>
         </header>
 
-        <form method="post" class="search-form">
+        <form method="post" class="search-form" id="searchForm">
             <label for="tag">Enter player tag (without "#"):</label>
-            <input type="text" id="tag" name="tag" placeholder="e.g. 2ABC9LQ" required>
-            <button type="submit">Search</button>
+            <input type="text" id="tag" name="tag" placeholder="e.g. 2ABC9LQ" required 
+                   pattern="[A-Za-z0-9#]+" title="Player tag can only contain letters and numbers"
+                   autocomplete="off">
+            <div id="searchHistory" class="search-history" style="display: none;"></div>
+            <button type="submit" id="searchBtn">
+                <span class="btn-text">Search</span>
+                <span class="loading" id="loadingSpinner" style="display: none;"></span>
+            </button>
+            <small class="help-text">Enter your player tag without the # symbol</small>
         </form>
 
         {% if player %}
         <div class="result-card">
             <h2>{{ player.name }}</h2>
-            <ul>
-                <li><strong>Trophies:</strong> {{ player.trophies }}</li>
-                <li><strong>Best Trophies:</strong> {{ player.bestTrophies }}</li>
-                <li><strong>Arena:</strong> {{ player.arena.name }}</li>
-                <li><strong>Wins:</strong> {{ player.wins }}</li>
-                <li><strong>Losses:</strong> {{ player.losses }}</li>
-                <li><strong>Win Rate:</strong> {{ winrate }}%</li>
-            </ul>
+            
+            <!-- Player Stats Section -->
+            <div class="stats-section">
+                <h3>Player Stats</h3>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-label">Level</span>
+                        <span class="stat-value">{{ level }}</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Experience</span>
+                        <span class="stat-value">{{ "{:,}".format(exp_points) }}</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Trophies</span>
+                        <span class="stat-value">{{ "{:,}".format(player.trophies) }}</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Best Trophies</span>
+                        <span class="stat-value">{{ "{:,}".format(player.bestTrophies) }}</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Arena</span>
+                        <span class="stat-value">{{ player.arena.name }}</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Total Donations</span>
+                        <span class="stat-value">{{ "{:,}".format(total_donations) }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Battle Stats Section -->
+            <div class="stats-section">
+                <h3>Battle Stats</h3>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-label">Wins</span>
+                        <span class="stat-value">{{ "{:,}".format(player.wins) }}</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Losses</span>
+                        <span class="stat-value">{{ "{:,}".format(player.losses) }}</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Win Rate</span>
+                        <span class="stat-value">{% if winrate %}{{ winrate }}%{% else %}N/A{% endif %}</span>
+                    </div>
+                    {% if player.get('threeCrownWins') %}
+                    <div class="stat-item">
+                        <span class="stat-label">3-Crown Wins</span>
+                        <span class="stat-value">{{ "{:,}".format(player.threeCrownWins) }}</span>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Clan Information -->
+            {% if clan_info %}
+            <div class="stats-section">
+                <h3>Clan Information</h3>
+                <div class="clan-info">
+                    <div class="stat-item">
+                        <span class="stat-label">Clan Name</span>
+                        <span class="stat-value">{{ clan_info.name }}</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Role</span>
+                        <span class="stat-value">{{ clan_info.role|title }}</span>
+                    </div>
+                    {% if clan_info.get('badgeName') %}
+                    <div class="stat-item">
+                        <span class="stat-label">Clan Badge</span>
+                        <span class="stat-value">{{ clan_info.badgeName }}</span>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Current Deck -->
+            {% if current_deck %}
+            <div class="stats-section">
+                <h3>Current Deck</h3>
+                <div class="deck-container">
+                    {% for card in current_deck %}
+                    <div class="card-item">
+                        <span class="card-name">{{ card.name }}</span>
+                        <span class="card-level">Lv{{ card.level }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Favourite Card -->
+            {% if favourite_card %}
+            <div class="stats-section">
+                <h3>Favourite Card</h3>
+                <div class="favourite-card">
+                    <span class="card-name">{{ favourite_card.name }}</span>
+                </div>
+            </div>
+            {% endif %}
         </div>
         {% elif error %}
-        <p class="error">{{ error }}</p>
+        <div class="error-container">
+            <p class="error">{{ error }}</p>
+        </div>
         {% endif %}
     </div>
+
+    <script>
+        // Search history management
+        const STORAGE_KEY = 'cr_search_history';
+        const MAX_HISTORY = 5;
+
+        function getSearchHistory() {
+            const history = localStorage.getItem(STORAGE_KEY);
+            return history ? JSON.parse(history) : [];
+        }
+
+        function saveToHistory(tag, playerName) {
+            let history = getSearchHistory();
+            const newEntry = { tag: tag, name: playerName, timestamp: Date.now() };
+            
+            // Remove duplicate if exists
+            history = history.filter(entry => entry.tag !== tag);
+            
+            // Add to beginning
+            history.unshift(newEntry);
+            
+            // Keep only MAX_HISTORY items
+            history = history.slice(0, MAX_HISTORY);
+            
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+        }
+
+        function showSearchHistory() {
+            const history = getSearchHistory();
+            const historyDiv = document.getElementById('searchHistory');
+            
+            if (history.length === 0) {
+                historyDiv.style.display = 'none';
+                return;
+            }
+
+            historyDiv.innerHTML = history.map(entry => 
+                `<div class="history-item" data-tag="${entry.tag}">
+                    <span class="history-name">${entry.name}</span>
+                    <span class="history-tag">#${entry.tag}</span>
+                </div>`
+            ).join('');
+            
+            historyDiv.style.display = 'block';
+
+            // Add click handlers
+            historyDiv.querySelectorAll('.history-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    document.getElementById('tag').value = this.dataset.tag;
+                    historyDiv.style.display = 'none';
+                });
+            });
+        }
+
+        document.getElementById('searchForm').addEventListener('submit', function() {
+            const btn = document.getElementById('searchBtn');
+            const btnText = document.querySelector('.btn-text');
+            const spinner = document.getElementById('loadingSpinner');
+            
+            // Show loading state
+            btnText.textContent = 'Searching...';
+            spinner.style.display = 'inline-block';
+            btn.disabled = true;
+        });
+
+        // Auto-format player tag input
+        document.getElementById('tag').addEventListener('input', function(e) {
+            let value = e.target.value.toUpperCase();
+            // Remove any non-alphanumeric characters except #
+            value = value.replace(/[^A-Z0-9#]/g, '');
+            // Remove # if it's not at the start
+            if (value.includes('#') && !value.startsWith('#')) {
+                value = value.replace(/#/g, '');
+            }
+            e.target.value = value;
+            
+            // Hide history when typing
+            document.getElementById('searchHistory').style.display = 'none';
+        });
+
+        // Show search history on focus
+        document.getElementById('tag').addEventListener('focus', function() {
+            showSearchHistory();
+            
+            const resultCard = document.querySelector('.result-card');
+            const errorContainer = document.querySelector('.error-container');
+            if (resultCard) resultCard.style.opacity = '0.7';
+            if (errorContainer) errorContainer.style.opacity = '0.7';
+        });
+
+        // Hide history when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!document.getElementById('searchForm').contains(e.target)) {
+                document.getElementById('searchHistory').style.display = 'none';
+            }
+        });
+
+        // Save successful search to history
+        {% if player %}
+        saveToHistory('{{ request.form.get("tag", "").upper().replace("#", "") }}', '{{ player.name }}');
+        {% endif %}
+    </script>
 </body>
 </html>
 
