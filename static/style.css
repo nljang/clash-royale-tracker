@@ -212,30 +212,87 @@ header p {
 /* Deck Container */
 .deck-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: 0.8rem;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 1rem;
 }
 
 .card-item {
     background-color: #2a2d31;
-    padding: 0.8rem;
-    border-radius: 8px;
+    padding: 1rem;
+    border-radius: 12px;
     text-align: center;
     border: 2px solid transparent;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
+    position: relative;
 }
 
 .card-item:hover {
     border-color: #f9d342;
-    transform: translateY(-2px);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(249, 211, 66, 0.3);
+}
+
+.card-image-container {
+    position: relative;
+    margin-bottom: 0.8rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    object-fit: cover;
+    background-color: #1a1d21;
+    border: 2px solid #333;
+    transition: transform 0.2s ease;
+}
+
+.card-item:hover .card-image {
+    transform: scale(1.05);
+}
+
+.card-level-badge {
+    position: absolute;
+    bottom: -5px;
+    right: -5px;
+    background-color: #f9d342;
+    color: #000;
+    font-size: 0.7rem;
+    font-weight: bold;
+    padding: 0.2rem 0.4rem;
+    border-radius: 10px;
+    border: 2px solid #2a2d31;
+    min-width: 18px;
+    text-align: center;
+}
+
+.card-placeholder {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #3a3d41, #2a2d31);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 0.8rem;
+    border: 2px solid #444;
+}
+
+.card-placeholder-text {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #f9d342;
 }
 
 .card-name {
     display: block;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     font-weight: bold;
     color: #fff;
-    margin-bottom: 0.3rem;
+    line-height: 1.2;
 }
 
 .card-level {
@@ -248,15 +305,41 @@ header p {
 .favourite-card {
     background-color: #2a2d31;
     padding: 1.5rem;
-    border-radius: 10px;
+    border-radius: 15px;
     text-align: center;
     border: 3px solid #f9d342;
+    transition: transform 0.2s ease;
+}
+
+.favourite-card:hover {
+    transform: scale(1.02);
+}
+
+.favourite-card-image-container {
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: center;
+}
+
+.favourite-card-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 12px;
+    object-fit: cover;
+    background-color: #1a1d21;
+    border: 3px solid #f9d342;
+    transition: transform 0.2s ease;
+}
+
+.favourite-card:hover .favourite-card-image {
+    transform: scale(1.1);
 }
 
 .favourite-card .card-name {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     color: #f9d342;
     font-weight: bold;
+    margin-top: 0.5rem;
 }
 
 /* Error Container */
@@ -327,16 +410,26 @@ header p {
     }
     
     .deck-container {
-        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-        gap: 0.6rem;
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 0.8rem;
     }
     
     .card-item {
-        padding: 0.6rem;
+        padding: 0.8rem;
+    }
+    
+    .card-image {
+        width: 50px;
+        height: 50px;
     }
     
     .card-name {
         font-size: 0.8rem;
+    }
+    
+    .favourite-card-image {
+        width: 70px;
+        height: 70px;
     }
 }
 
@@ -359,6 +452,30 @@ header p {
     
     .deck-container {
         grid-template-columns: repeat(2, 1fr);
+        gap: 0.6rem;
+    }
+    
+    .card-item {
+        padding: 0.6rem;
+    }
+    
+    .card-image {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .card-name {
+        font-size: 0.7rem;
+    }
+    
+    .card-level-badge {
+        font-size: 0.6rem;
+        padding: 0.1rem 0.3rem;
+    }
+    
+    .favourite-card-image {
+        width: 60px;
+        height: 60px;
     }
     
     .stats-section h3 {

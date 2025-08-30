@@ -116,8 +116,17 @@
                 <div class="deck-container">
                     {% for card in current_deck %}
                     <div class="card-item">
+                        {% if card.iconUrls and card.iconUrls.medium %}
+                        <div class="card-image-container">
+                            <img src="{{ card.iconUrls.medium }}" alt="{{ card.name }}" class="card-image" loading="lazy">
+                            <span class="card-level-badge">{{ card.level }}</span>
+                        </div>
+                        {% else %}
+                        <div class="card-placeholder">
+                            <span class="card-placeholder-text">{{ card.name[:2] }}</span>
+                        </div>
+                        {% endif %}
                         <span class="card-name">{{ card.name }}</span>
-                        <span class="card-level">Lv{{ card.level }}</span>
                     </div>
                     {% endfor %}
                 </div>
@@ -129,6 +138,11 @@
             <div class="stats-section">
                 <h3>Favourite Card</h3>
                 <div class="favourite-card">
+                    {% if favourite_card.iconUrls and favourite_card.iconUrls.medium %}
+                    <div class="favourite-card-image-container">
+                        <img src="{{ favourite_card.iconUrls.medium }}" alt="{{ favourite_card.name }}" class="favourite-card-image" loading="lazy">
+                    </div>
+                    {% endif %}
                     <span class="card-name">{{ favourite_card.name }}</span>
                 </div>
             </div>
