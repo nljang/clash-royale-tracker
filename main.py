@@ -125,7 +125,11 @@ def form_post(request: Request, tag: str = Form(...)):
             "error": str(e)
         })
     except Exception as e:
+        # Log the actual error for debugging
+        print(f"Unexpected error: {type(e).__name__}: {str(e)}")
+        import traceback
+        traceback.print_exc()
         return templates.TemplateResponse("index.html", {
             "request": request, 
-            "error": "An unexpected error occurred. Please try again."
+            "error": f"An unexpected error occurred: {str(e)}"
         })

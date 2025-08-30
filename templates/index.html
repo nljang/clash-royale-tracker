@@ -40,15 +40,15 @@
                     </div>
                     <div class="stat-item">
                         <span class="stat-label">Experience</span>
-                        <span class="stat-value">{{ "{:,}".format(exp_points) }}</span>
+                        <span class="stat-value">{{ "{:,}".format(exp_points) if exp_points else "0" }}</span>
                     </div>
                     <div class="stat-item">
                         <span class="stat-label">Trophies</span>
-                        <span class="stat-value">{{ "{:,}".format(player.trophies) }}</span>
+                        <span class="stat-value">{{ "{:,}".format(player.trophies) if player.trophies else "0" }}</span>
                     </div>
                     <div class="stat-item">
                         <span class="stat-label">Best Trophies</span>
-                        <span class="stat-value">{{ "{:,}".format(player.bestTrophies) }}</span>
+                        <span class="stat-value">{{ "{:,}".format(player.bestTrophies) if player.bestTrophies else "0" }}</span>
                     </div>
                     <div class="stat-item">
                         <span class="stat-label">Arena</span>
@@ -56,7 +56,7 @@
                     </div>
                     <div class="stat-item">
                         <span class="stat-label">Total Donations</span>
-                        <span class="stat-value">{{ "{:,}".format(total_donations) }}</span>
+                        <span class="stat-value">{{ "{:,}".format(total_donations) if total_donations else "0" }}</span>
                     </div>
                 </div>
             </div>
@@ -67,11 +67,11 @@
                 <div class="stats-grid">
                     <div class="stat-item">
                         <span class="stat-label">Wins</span>
-                        <span class="stat-value">{{ "{:,}".format(player.wins) }}</span>
+                        <span class="stat-value">{{ "{:,}".format(player.wins) if player.wins else "0" }}</span>
                     </div>
                     <div class="stat-item">
                         <span class="stat-label">Losses</span>
-                        <span class="stat-value">{{ "{:,}".format(player.losses) }}</span>
+                        <span class="stat-value">{{ "{:,}".format(player.losses) if player.losses else "0" }}</span>
                     </div>
                     <div class="stat-item">
                         <span class="stat-label">Win Rate</span>
@@ -80,7 +80,7 @@
                     {% if player.get('threeCrownWins') %}
                     <div class="stat-item">
                         <span class="stat-label">3-Crown Wins</span>
-                        <span class="stat-value">{{ "{:,}".format(player.threeCrownWins) }}</span>
+                        <span class="stat-value">{{ "{:,}".format(player.threeCrownWins) if player.threeCrownWins else "0" }}</span>
                     </div>
                     {% endif %}
                 </div>
@@ -239,7 +239,7 @@
 
         // Save successful search to history
         {% if player %}
-        saveToHistory('{{ request.form.get("tag", "").upper().replace("#", "") }}', '{{ player.name }}');
+        saveToHistory('{{ request.form.get("tag", "").upper().replace("#", "") }}', {{ player.name|tojson }});
         {% endif %}
     </script>
 </body>
