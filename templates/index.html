@@ -238,8 +238,8 @@
         });
 
         // Save successful search to history
-        {% if player %}
-        saveToHistory('{{ request.form.get("tag", "").upper().replace("#", "") }}', {{ player.name|tojson }});
+        {% if player and searched_tag %}
+        saveToHistory('{{ searched_tag }}', {{ player.name|tojson }});
         {% endif %}
     </script>
 </body>

@@ -116,7 +116,8 @@ def form_post(request: Request, tag: str = Form(...)):
             "total_donations": total_donations,
             "clan_info": clan_info,
             "current_deck": current_deck,
-            "favourite_card": favourite_card
+            "favourite_card": favourite_card,
+            "searched_tag": clean_tag
         })
     
     except ValueError as e:
